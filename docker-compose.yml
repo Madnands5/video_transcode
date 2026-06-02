@@ -45,17 +45,19 @@ services:
     networks:
       - app-network
   localstack:
-    image: localstack/localstack
+    image: localstack/localstack:1.4
     ports:
-      - "4566:4566" # LocalStack Gateway
-    environment:
-      - SERVICES=s3
-      - DEBUG=1
+      - "4566:4566"
     volumes:
-      - "./localstack-init.sh:/etc/localstack/init/ready.d/init-aws.sh"
-      - "localstack_data:/var/lib/localstack"
+      # This mapping is the magic key for automation
+      - ./localstack.sh:/etc/localstack/init/ready.d/setup.sh
+      - localstack_data:/var/lib/localstack
     networks:
       - app-network
+
+  # This container waits for localstack, runs your script, then exits.
+
+   
 # Shared resources
 volumes:
   redis_data:
