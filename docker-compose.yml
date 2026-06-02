@@ -1,0 +1,54 @@
+services:
+  # 1. Redis Broker for Celery
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - app-network
+
+  # 2. Django Backend (API)
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    env_file: ./backend/.env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+    networks:
+      - app-network
+
+  # 3. Celery Worker (Background Tasks)
+  worker:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    command: celery -A config worker --loglevel=info
+    env_file: ./backend/.env
+    depends_on:
+      - redis
+      - backend
+    networks:
+      - app-network
+
+  # 4. Angular Frontend
+  frontend:
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "4200:80" # Maps local 4200 to container's Nginx port 80
+    networks:
+      - app-network
+
+# Shared resources
+volumes:
+  redis_data:
+
+networks:
+  app-network:
+    driver: bridge
