@@ -14,8 +14,12 @@ class S3Service:
         # If running in local dev mode with LocalStack
         if getattr(settings, 'USE_LOCALSTACK', False):
             client_args['endpoint_url'] = settings.LOCALSTACK_ENDPOINT_URL
-            
-        return boto3.client('s3', **client_args)
+        from botocore.config import Config
+        return boto3.client(
+                's3', 
+                **client_args,
+                config=Config(s3={'addressing_style': 'path'}) # Force path-style: localhost:4566/bucket/key
+)
 
     @classmethod
     def generate_upload_url(cls, file_key):

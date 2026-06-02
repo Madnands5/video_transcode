@@ -5,11 +5,12 @@ FROM python:3.11-slim
 WORKDIR /app
 
 # Install system dependencies (needed for ffmpeg)
-RUN apt-get update && apt-get install -y \
-    ffmpeg \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y build-essential libpq-dev ffmpeg && rm -rf /var/lib/apt/lists/*
 
-# Install python dependencies
+# Upgrade pip
+RUN pip install --upgrade pip
+
+# Install dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 

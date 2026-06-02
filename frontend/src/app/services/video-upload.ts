@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class VideoUploadService {
-  private apiUrl = 'http://localhost:8000/api/generate-url/'; // Your Django URL
+  private apiUrl = 'http://localhost:8000/upload-url/'; // Your Django URL
 
   constructor(private http: HttpClient) { }
 

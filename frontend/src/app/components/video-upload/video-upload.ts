@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { VideoUploadService } from '../../services/video-upload';
-
+import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-video-upload',
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './video-upload.html',
   styleUrl: './video-upload.css',
 })

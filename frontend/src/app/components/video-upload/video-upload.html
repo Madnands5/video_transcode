@@ -1,1 +1,27 @@
-<p>video-upload works!</p>
+<div class="upload-container">
+  <div class="upload-card">
+    <h2>Video Transcoder</h2>
+
+    <div class="form-group">
+      <label for="email">User Email</label>
+      <input type="email" id="email" [(ngModel)]="email" placeholder="Enter your email">
+    </div>
+
+    <div class="form-group">
+      <label for="dimension">Target Resolution</label>
+      <select id="dimension" [(ngModel)]="dimension">
+        <option value="480p">480p</option>
+        <option value="720p">720p</option>
+        <option value="1080p">1080p</option>
+        <option value="4k">4K</option>
+      </select>
+    </div>
+
+    <div class="file-drop-area">
+      <input type="file" (change)="onFileSelected($event)" accept="video/*">
+      <p>{{ selectedFile ? selectedFile.name : 'Click to select video' }}</p>
+    </div>
+
+    <button [disabled]="!selectedFile" (click)="onSubmit()">Upload Video</button>
+  </div>
+</div>
